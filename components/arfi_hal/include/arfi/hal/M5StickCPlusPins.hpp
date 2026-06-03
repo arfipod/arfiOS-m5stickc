@@ -32,11 +32,14 @@ static constexpr bool kLcdMirrorY = false;
 
 static constexpr gpio_num_t kButtonA = GPIO_NUM_37;
 static constexpr gpio_num_t kButtonB = GPIO_NUM_39;
+static constexpr gpio_num_t kIrLed = GPIO_NUM_9;
+static constexpr gpio_num_t kRedLed = GPIO_NUM_10;
 
 static constexpr i2c_port_t kI2cPort = I2C_NUM_0;
 static constexpr gpio_num_t kI2cSda = GPIO_NUM_21;
 static constexpr gpio_num_t kI2cScl = GPIO_NUM_22;
 static constexpr uint32_t kI2cFrequencyHz = 400000;
 static constexpr uint8_t kAxp192Address = 0x34;
+static constexpr uint8_t kMpu6886Address = 0x68;
 
 } // namespace arfi::m5stickcplus

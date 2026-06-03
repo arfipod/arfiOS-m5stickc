@@ -135,6 +135,7 @@ const uint8_t* Canvas::glyphFor(char c) {
     static const uint8_t dot[5] = {0x00, 0x60, 0x60, 0x00, 0x00};
     static const uint8_t slash[5] = {0x20, 0x10, 0x08, 0x04, 0x02};
     static const uint8_t percent[5] = {0x23, 0x13, 0x08, 0x64, 0x62};
+    static const uint8_t plus[5] = {0x08, 0x08, 0x3E, 0x08, 0x08};
     static const uint8_t greater[5] = {0x00, 0x41, 0x22, 0x14, 0x08};
     static const uint8_t less[5] = {0x00, 0x08, 0x14, 0x22, 0x41};
 
@@ -156,6 +157,7 @@ const uint8_t* Canvas::glyphFor(char c) {
     case '.': return dot;
     case '/': return slash;
     case '%': return percent;
+    case '+': return plus;
     case '>': return greater;
     case '<': return less;
     default: return box;

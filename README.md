@@ -28,13 +28,16 @@ Implemented in this first version:
 - M5StickC Plus board configuration;
 - ST7789 display service through ESP-IDF `esp_lcd`;
 - AXP192 minimal power/backlight setup;
+- MPU6886 IMU service;
+- IR LED carrier/burst service;
+- Wi-Fi STA and REST GET services;
 - two-button input service with short, long, and double presses;
 - app model: `App`, `AppManager`, `AppRegistry`;
 - foreground-only native apps;
 - Cover Flow launcher;
 - List launcher;
 - NVS-backed settings;
-- demo apps: Settings, Diagnostics, Pomodoro, About;
+- demo apps: Settings, Diagnostics, Pomodoro, Nivel IMU, Barrido IR, REST API, Flappy Bird, About;
 - PlatformIO build/upload environment for M5StickC Plus;
 - GitHub Actions build workflow;
 - GitHub Actions release workflow for tagged releases.
@@ -42,7 +45,6 @@ Implemented in this first version:
 Not implemented yet:
 
 - BLE;
-- Wi-Fi;
 - iDotMatrix control;
 - SD card app manifests;
 - dynamic binary loading;
@@ -59,11 +61,14 @@ ESP32-PICO-D4
 ST7789v2 135x240 TFT
 Button A: GPIO37
 Button B: GPIO39
+IR LED:   GPIO9
 LCD MOSI: GPIO15
 LCD SCLK: GPIO13
 LCD DC:   GPIO23
 LCD RST:  GPIO18
 LCD CS:   GPIO5
+MPU6886 I2C SDA: GPIO21
+MPU6886 I2C SCL: GPIO22
 AXP192 I2C SDA: GPIO21
 AXP192 I2C SCL: GPIO22
 ```
@@ -105,6 +110,18 @@ pio run -e m5stickcplus
 The included `platformio.ini` uses ESP-IDF through `espressif32@6.9.0`, which provides ESP-IDF `5.3.1`.
 
 PlatformIO currently exposes an `m5stick-c` board profile, not a separate M5StickC Plus profile. arfiOS uses that ESP32/4 MB baseline and defines the M5StickC Plus hardware details in its own HAL.
+
+### REST API app configuration
+
+The REST API app uses compile-time settings so credentials are not committed by default:
+
+```ini
+build_flags =
+    -D ARFI_BOARD_M5STICKCPLUS=1
+    '-D ARFI_WIFI_SSID="your_ssid"'
+    '-D ARFI_WIFI_PASSWORD="your_password"'
+    '-D ARFI_REST_URL="http://your-api.local/reading"'
+```
 
 ## Flash with PlatformIO
 
@@ -159,7 +176,7 @@ arfiOS/
     arfi_core/       # App model, app manager, registry, system context
     arfi_runtime/    # System orchestration and main foreground loop
     arfi_hal/        # Board config and M5StickC Plus hardware adapters
-    arfi_services/   # Display, input, settings, power services
+    arfi_services/   # Display, input, settings, power, IMU, IR services
     arfi_ui/         # Canvas, theme, launcher renderers
     arfi_apps/       # Native apps
   docs/

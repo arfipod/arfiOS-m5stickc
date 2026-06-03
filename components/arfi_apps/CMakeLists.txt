@@ -4,6 +4,10 @@ idf_component_register(
         "settings/SettingsApp.cpp"
         "diagnostics/DiagnosticsApp.cpp"
         "pomodoro/PomodoroApp.cpp"
+        "imu_level/ImuLevelApp.cpp"
+        "ir_sweep/IrSweepApp.cpp"
+        "flappy/FlappyBirdApp.cpp"
+        "rest_reader/RestReaderApp.cpp"
         "about/AboutApp.cpp"
     INCLUDE_DIRS
         "include"
@@ -11,10 +15,15 @@ idf_component_register(
         "settings"
         "diagnostics"
         "pomodoro"
+        "imu_level"
+        "ir_sweep"
+        "flappy"
+        "rest_reader"
         "about"
     REQUIRES
         arfi_core
         arfi_services
         arfi_ui
         esp_timer
+        json
 )

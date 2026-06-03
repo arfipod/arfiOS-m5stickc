@@ -8,6 +8,8 @@ idf_component_register(
         arfi_services
         arfi_ui
         arfi_apps
+        esp_event
+        esp_netif
         esp_timer
         nvs_flash
 )

@@ -14,14 +14,22 @@ System::System()
       settings_app_(ctx_),
       diagnostics_app_(ctx_),
       pomodoro_app_(ctx_),
+      imu_level_app_(ctx_),
+      ir_sweep_app_(ctx_),
+      flappy_bird_app_(ctx_),
+      rest_reader_app_(ctx_),
       about_app_(ctx_) {
     ctx_.board = makeM5StickCPlusBoardConfig();
     ctx_.app_manager = &app_manager_;
     ctx_.app_registry = &registry_;
     ctx_.display = &display_;
+    ctx_.imu = &imu_;
     ctx_.input = &input_;
+    ctx_.ir = &ir_;
+    ctx_.rest = &rest_;
     ctx_.settings = &settings_;
     ctx_.power = &power_;
+    ctx_.wifi = &wifi_;
 }
 
 esp_err_t System::begin() {
@@ -38,6 +46,26 @@ esp_err_t System::begin() {
     power_.setBacklightPercent(static_cast<uint8_t>(settings_.getInt("ui_bright", 90)));
     ESP_RETURN_ON_ERROR(input_.begin(ctx_.board), TAG, "Input initialization failed");
 
+    esp_err_t optional_err = imu_.begin(ctx_.board);
+    if (optional_err != ESP_OK) {
+        ESP_LOGW(TAG, "IMU service unavailable: %s", esp_err_to_name(optional_err));
+    }
+
+    optional_err = ir_.begin(ctx_.board);
+    if (optional_err != ESP_OK) {
+        ESP_LOGW(TAG, "IR service unavailable: %s", esp_err_to_name(optional_err));
+    }
+
+    optional_err = wifi_.begin();
+    if (optional_err != ESP_OK) {
+        ESP_LOGW(TAG, "Wi-Fi service unavailable: %s", esp_err_to_name(optional_err));
+    }
+
+    optional_err = rest_.begin(wifi_);
+    if (optional_err != ESP_OK) {
+        ESP_LOGW(TAG, "REST service unavailable: %s", esp_err_to_name(optional_err));
+    }
+
     registerApps();
 
     last_tick_ms_ = nowMs();
@@ -52,6 +80,10 @@ void System::registerApps() {
     registry_.add({"settings", "Settings", "System", "ST", &settings_app_});
     registry_.add({"diagnostics", "Diagnostics", "System", "DG", &diagnostics_app_});
     registry_.add({"pomodoro", "Pomodoro", "Tools", "PO", &pomodoro_app_});
+    registry_.add({"imu_level", "Nivel IMU", "Tools", "LV", &imu_level_app_});
+    registry_.add({"ir_sweep", "Barrido IR", "Tools", "IR", &ir_sweep_app_});
+    registry_.add({"flappy_bird", "Flappy Bird", "Games", "FB", &flappy_bird_app_});
+    registry_.add({"rest_reader", "REST API", "Tools", "RS", &rest_reader_app_});
     registry_.add({"about", "About", "System", "AR", &about_app_});
 }
 
@@ -61,6 +93,7 @@ void System::tick() {
     last_tick_ms_ = now;
 
     input_.update(now);
+    ir_.update(now);
     processInput();
 
     app_manager_.update(dt);

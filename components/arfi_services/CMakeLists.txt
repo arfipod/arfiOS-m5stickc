@@ -1,15 +1,23 @@
 idf_component_register(
     SRCS
         "src/DisplayService.cpp"
+        "src/ImuService.cpp"
         "src/InputService.cpp"
+        "src/IrService.cpp"
         "src/PowerService.cpp"
+        "src/RestService.cpp"
         "src/SettingsService.cpp"
+        "src/WifiService.cpp"
     INCLUDE_DIRS "include"
     REQUIRES
         arfi_core
         arfi_hal
         arfi_ui
         driver
+        esp_event
+        esp_http_client
+        esp_netif
         nvs_flash
         esp_timer
+        esp_wifi
 )
