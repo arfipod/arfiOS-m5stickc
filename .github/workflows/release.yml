@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release-m5stickcplus:
+    name: Build and release M5StickC Plus firmware
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Build firmware
+        uses: espressif/esp-idf-ci-action@v1
+        with:
+          esp_idf_version: v5.3
+          target: esp32
+          path: .
+          command: idf.py build && mkdir -p release && cp build/arfiOS.bin release/arfiOS-m5stickcplus-app.bin && cp build/bootloader/bootloader.bin release/bootloader.bin && cp build/partition_table/partition-table.bin release/partition-table.bin && cp build/flasher_args.json release/flasher_args.json
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release/arfiOS-m5stickcplus-app.bin
+            release/bootloader.bin
+            release/partition-table.bin
+            release/flasher_args.json
+          generate_release_notes: true

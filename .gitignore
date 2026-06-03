@@ -1,0 +1,14 @@
+build/
+.pio/
+managed_components/
+sdkconfig
+sdkconfig.*
+!sdkconfig.defaults
+sdkconfig.old
+*.bin
+*.elf
+*.map
+.vscode/
+.idea/
+.DS_Store
+.env

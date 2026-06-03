@@ -1,0 +1,20 @@
+idf_component_register(
+    SRCS
+        "launcher/LauncherApp.cpp"
+        "settings/SettingsApp.cpp"
+        "diagnostics/DiagnosticsApp.cpp"
+        "pomodoro/PomodoroApp.cpp"
+        "about/AboutApp.cpp"
+    INCLUDE_DIRS
+        "include"
+        "launcher"
+        "settings"
+        "diagnostics"
+        "pomodoro"
+        "about"
+    REQUIRES
+        arfi_core
+        arfi_services
+        arfi_ui
+        esp_timer
+)
