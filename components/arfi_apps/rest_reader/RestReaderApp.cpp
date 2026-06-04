@@ -94,8 +94,15 @@ void RestReaderApp::render(Canvas& canvas) {
         canvas.drawText(8, 66, "READING", theme_.muted, 1);
         drawSanitizedLine(canvas, 8, 84, reading_, theme_.text, 0);
     } else if (state_ == State::Error) {
-        std::snprintf(line, sizeof(line), "ERR 0X%X", static_cast<unsigned>(response_.error));
+        std::snprintf(line, sizeof(line), "ERR %s", errorLabel_(response_));
         canvas.drawCenteredText(canvas.width() / 2, 72, line, theme_.warning, 1);
+        std::snprintf(
+            line,
+            sizeof(line),
+            "0X%X E%d",
+            static_cast<unsigned>(response_.error),
+            response_.transport_errno);
+        canvas.drawCenteredText(canvas.width() / 2, 86, line, theme_.muted, 1);
     } else {
         canvas.drawCenteredText(canvas.width() / 2, 72, "NO FIELD", theme_.warning, 1);
     }
@@ -191,6 +198,40 @@ const char* RestReaderApp::stateName_(State state) {
     case State::Error: return "ERROR";
     }
     return "ERROR";
+}
+
+const char* RestReaderApp::errorLabel_(const RestResponse& response) {
+    if (response.error_name == "ESP_ERR_HTTP_FETCH_HEADER") {
+        return "FETCH HEADER";
+    }
+    if (response.error_name == "ESP_ERR_HTTP_CONNECT") {
+        return "HTTP CONNECT";
+    }
+    if (response.error_name == "ESP_ERR_HTTP_WRITE_DATA") {
+        return "WRITE DATA";
+    }
+    if (response.error_name == "ESP_ERR_HTTP_READ_TIMEOUT") {
+        return "READ TIMEOUT";
+    }
+    if (response.error_name == "ESP_ERR_HTTP_INVALID_TRANSPORT") {
+        return "BAD SCHEME";
+    }
+    if (response.error_name == "ESP_ERR_HTTP_CONNECTION_CLOSED") {
+        return "CLOSED";
+    }
+    if (response.error_name == "ESP_ERR_HTTP_INCOMPLETE_DATA") {
+        return "INCOMPLETE";
+    }
+    if (response.error_name == "ESP_ERR_TIMEOUT") {
+        return "WIFI TIMEOUT";
+    }
+    if (response.error_name == "ESP_FAIL") {
+        return "WIFI FAIL";
+    }
+    if (!response.error_name.empty()) {
+        return response.error_name.c_str();
+    }
+    return "UNKNOWN";
 }
 
 char RestReaderApp::sanitize_(char c) {

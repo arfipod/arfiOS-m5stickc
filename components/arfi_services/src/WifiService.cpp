@@ -141,6 +141,40 @@ esp_err_t WifiService::connect(uint32_t timeout_ms) {
     return last_error_;
 }
 
+int8_t WifiService::rssiDbm() const {
+    if (!connected_) {
+        return 0;
+    }
+
+    wifi_ap_record_t ap_info = {};
+    const esp_err_t err = esp_wifi_sta_get_ap_info(&ap_info);
+    if (err != ESP_OK) {
+        return 0;
+    }
+
+    return ap_info.rssi;
+}
+
+uint8_t WifiService::signalLevel() const {
+    const int8_t rssi = rssiDbm();
+    if (rssi == 0) {
+        return 0;
+    }
+    if (rssi >= -55) {
+        return 4;
+    }
+    if (rssi >= -67) {
+        return 3;
+    }
+    if (rssi >= -75) {
+        return 2;
+    }
+    if (rssi >= -85) {
+        return 1;
+    }
+    return 0;
+}
+
 void WifiService::eventHandler_(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data) {
     auto* self = static_cast<WifiService*>(arg);
     if (self != nullptr) {

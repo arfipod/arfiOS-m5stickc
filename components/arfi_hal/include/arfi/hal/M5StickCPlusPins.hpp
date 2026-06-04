@@ -41,5 +41,6 @@ static constexpr gpio_num_t kI2cScl = GPIO_NUM_22;
 static constexpr uint32_t kI2cFrequencyHz = 400000;
 static constexpr uint8_t kAxp192Address = 0x34;
 static constexpr uint8_t kMpu6886Address = 0x68;
+static constexpr uint8_t kSh200qAddress = 0x6C;
 
 } // namespace arfi::m5stickcplus

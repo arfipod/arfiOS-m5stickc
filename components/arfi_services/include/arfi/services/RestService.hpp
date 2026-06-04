@@ -12,6 +12,8 @@ class WifiService;
 
 struct RestResponse {
     esp_err_t error = ESP_ERR_INVALID_STATE;
+    std::string error_name;
+    int transport_errno = 0;
     int status_code = 0;
     int64_t content_length = -1;
     bool truncated = false;

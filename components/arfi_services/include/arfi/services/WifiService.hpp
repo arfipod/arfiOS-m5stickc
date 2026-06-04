@@ -21,6 +21,8 @@ public:
     bool hasCredentials() const { return !ssid_.empty(); }
     const char* ssid() const { return ssid_.c_str(); }
     esp_err_t lastError() const { return last_error_; }
+    int8_t rssiDbm() const;
+    uint8_t signalLevel() const;
 
 private:
     static void eventHandler_(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data);

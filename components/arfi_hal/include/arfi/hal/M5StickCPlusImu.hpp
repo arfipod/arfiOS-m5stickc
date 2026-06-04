@@ -26,13 +26,25 @@ public:
     bool initialized() const { return initialized_; }
 
 private:
+    enum class Chip : uint8_t {
+        None,
+        Mpu6886,
+        Sh200q,
+    };
+
     esp_err_t initI2c_();
-    esp_err_t writeReg_(uint8_t reg, uint8_t value);
-    esp_err_t readReg_(uint8_t reg, uint8_t& value);
-    esp_err_t readRegs_(uint8_t reg, uint8_t* data, size_t length);
+    esp_err_t initMpu6886_();
+    esp_err_t initSh200q_();
+    esp_err_t readMpu6886_(M5StickCPlusImuSample& sample);
+    esp_err_t readSh200q_(M5StickCPlusImuSample& sample);
+    esp_err_t writeReg_(uint8_t address, uint8_t reg, uint8_t value);
+    esp_err_t readReg_(uint8_t address, uint8_t reg, uint8_t& value);
+    esp_err_t readRegs_(uint8_t address, uint8_t reg, uint8_t* data, size_t length);
     static int16_t toInt16_(uint8_t high, uint8_t low);
+    static int16_t toInt16Le_(uint8_t low, uint8_t high);
 
     bool initialized_ = false;
+    Chip chip_ = Chip::None;
 };
 
 } // namespace arfi

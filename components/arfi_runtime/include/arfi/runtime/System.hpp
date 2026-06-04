@@ -35,6 +35,7 @@ public:
 private:
     void registerApps();
     void processInput();
+    void renderStatusOverlay(Canvas& canvas);
     bool shouldRender(uint32_t now_ms) const;
     uint32_t nowMs() const;
 

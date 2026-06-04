@@ -34,6 +34,7 @@ private:
     void drawSanitizedLine(Canvas& canvas, int x, int y, const std::string& text, Color color, size_t offset) const;
     void drawBodyPreview(Canvas& canvas, int x, int y, Color color) const;
     static const char* stateName_(State state);
+    static const char* errorLabel_(const RestResponse& response);
     static char sanitize_(char c);
 
     Theme theme_ = defaultTheme();

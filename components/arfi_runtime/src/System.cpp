@@ -103,6 +103,7 @@ void System::tick() {
     if (shouldRender(now)) {
         Canvas& canvas = display_.canvas();
         app_manager_.render(canvas);
+        renderStatusOverlay(canvas);
         display_.flush();
         last_render_ms_ = now;
     }
@@ -123,6 +124,30 @@ void System::processInput() {
 
 bool System::shouldRender(uint32_t now_ms) const {
     return now_ms - last_render_ms_ >= 33;
+}
+
+void System::renderStatusOverlay(Canvas& canvas) {
+    if (!wifi_.connected()) {
+        return;
+    }
+
+    const uint8_t level = wifi_.signalLevel();
+    const int base_x = static_cast<int>(canvas.width()) - 18;
+    const int base_y = 13;
+    const int bar_w = 2;
+    const int gap = 2;
+    const Color active = level >= 3 ? Colors::Green : Colors::Yellow;
+
+    canvas.fillRect(base_x - 2, 2, 18, 13, Colors::Black);
+    for (uint8_t i = 0; i < 4; ++i) {
+        const int h = 3 + static_cast<int>(i) * 2;
+        const int x = base_x + static_cast<int>(i) * (bar_w + gap);
+        const int y = base_y - h;
+        canvas.drawRect(x, y, bar_w, h, Colors::Gray50);
+        if (i < level) {
+            canvas.fillRect(x, y, bar_w, h, active);
+        }
+    }
 }
 
 uint32_t System::nowMs() const {
