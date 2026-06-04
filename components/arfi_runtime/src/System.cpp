@@ -19,6 +19,7 @@ System::System()
       imu_level_app_(ctx_),
       ir_sweep_app_(ctx_),
       flappy_bird_app_(ctx_),
+      cube3d_app_(ctx_),
       rest_reader_app_(ctx_),
       about_app_(ctx_) {
     ctx_.board = makeM5StickCPlusBoardConfig();
@@ -85,6 +86,7 @@ void System::registerApps() {
     registry_.add({"imu_level", "Nivel IMU", "Tools", "LV", &imu_level_app_, &app_icons::ImuLevel});
     registry_.add({"ir_sweep", "Barrido IR", "Tools", "IR", &ir_sweep_app_, &app_icons::IrSweep});
     registry_.add({"flappy_bird", "Flappy Bird", "Games", "FB", &flappy_bird_app_, &app_icons::FlappyBird});
+    registry_.add({"cube3d", "3D Cube", "Tools", "3D", &cube3d_app_, &app_icons::Cube3D});
     registry_.add({"rest_reader", "REST API", "Tools", "RS", &rest_reader_app_, &app_icons::Rest});
     registry_.add({"about", "About", "System", "AR", &about_app_, &app_icons::About});
 }

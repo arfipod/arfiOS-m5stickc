@@ -12,6 +12,7 @@
 #include "arfi/services/SettingsService.hpp"
 #include "arfi/services/WifiService.hpp"
 #include "arfi/apps/AboutApp.hpp"
+#include "arfi/apps/Cube3DApp.hpp"
 #include "arfi/apps/DiagnosticsApp.hpp"
 #include "arfi/apps/FlappyBirdApp.hpp"
 #include "arfi/apps/ImuLevelApp.hpp"
@@ -58,6 +59,7 @@ private:
     ImuLevelApp imu_level_app_;
     IrSweepApp ir_sweep_app_;
     FlappyBirdApp flappy_bird_app_;
+    Cube3DApp cube3d_app_;
     RestReaderApp rest_reader_app_;
     AboutApp about_app_;
 

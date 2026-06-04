@@ -7,6 +7,7 @@ idf_component_register(
         "imu_level/ImuLevelApp.cpp"
         "ir_sweep/IrSweepApp.cpp"
         "flappy/FlappyBirdApp.cpp"
+        "cube3d/Cube3DApp.cpp"
         "rest_reader/RestReaderApp.cpp"
         "about/AboutApp.cpp"
     INCLUDE_DIRS
@@ -18,6 +19,7 @@ idf_component_register(
         "imu_level"
         "ir_sweep"
         "flappy"
+        "cube3d"
         "rest_reader"
         "about"
     REQUIRES

@@ -73,6 +73,17 @@ inline constexpr uint8_t kRestBits[] ARFI_PROGMEM = {
     0b00000000,
 };
 
+inline constexpr uint8_t kCube3DBits[] ARFI_PROGMEM = {
+    0b00111100,
+    0b01100110,
+    0b11011010,
+    0b10111110,
+    0b10100110,
+    0b11011010,
+    0b01100110,
+    0b00111100,
+};
+
 inline constexpr uint8_t kAboutBits[] ARFI_PROGMEM = {
     0b00111100,
     0b01000010,
@@ -113,6 +124,8 @@ inline constexpr AppIcon IrSweep = {
     8, 8, AppIconFormat::Mono1, kIrSweepBits, Colors::Red.value, Colors::Black.value, true, Colors::Black.value};
 inline constexpr AppIcon FlappyBird = {
     8, 8, AppIconFormat::Rgb565, kFlappyPixels, Colors::White.value, Colors::Black.value, true, Colors::Magenta.value};
+inline constexpr AppIcon Cube3D = {
+    8, 8, AppIconFormat::Mono1, kCube3DBits, Colors::Accent.value, Colors::Black.value, true, Colors::Black.value};
 inline constexpr AppIcon Rest = {
     8, 8, AppIconFormat::Mono1, kRestBits, Colors::Cyan.value, Colors::Black.value, true, Colors::Black.value};
 inline constexpr AppIcon About = {
