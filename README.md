@@ -33,10 +33,12 @@ Implemented in this first version:
 - Wi-Fi STA and REST GET services;
 - two-button input service with short, long, and double presses;
 - app model: `App`, `AppManager`, `AppRegistry`;
+- flash/PROGMEM app icons with `Mono1` and `Rgb565` formats;
 - foreground-only native apps;
 - Cover Flow launcher;
 - List launcher;
 - NVS-backed settings;
+- RAM and app-partition flash usage views;
 - demo apps: Settings, Diagnostics, Pomodoro, Nivel IMU, Barrido IR, REST API, Flappy Bird, About;
 - PlatformIO build/upload environment for M5StickC Plus;
 - GitHub Actions build workflow;
@@ -113,14 +115,21 @@ PlatformIO currently exposes an `m5stick-c` board profile, not a separate M5Stic
 
 ### REST API app configuration
 
-The REST API app uses compile-time settings so credentials are not committed by default:
+The REST API app can use local compile-time settings without committing credentials. Copy `.env.example` to `.env`, edit the local `.env`, and keep `platformio.ini` public:
+
+```dotenv
+ARFI_WIFI_SSID=your_ssid
+ARFI_WIFI_PASSWORD=your_password
+ARFI_REST_URL=http://your-api.local/reading
+```
+
+`.env` is ignored by Git. PlatformIO loads it through `scripts/platformio_load_env.py` and injects the values as build defines.
+
+The public `platformio.ini` should only keep non-secret flags:
 
 ```ini
 build_flags =
     -D ARFI_BOARD_M5STICKCPLUS=1
-    '-D ARFI_WIFI_SSID="your_ssid"'
-    '-D ARFI_WIFI_PASSWORD="your_password"'
-    '-D ARFI_REST_URL="http://your-api.local/reading"'
 ```
 
 ## Flash with PlatformIO
@@ -191,6 +200,20 @@ arfiOS/
     ci.yml
     release.yml
 ```
+
+## Documentation
+
+The repository documentation is written in English and includes Mermaid class and sequence diagrams:
+
+| Document | Focus |
+|---|---|
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Full runtime architecture, component layers, class diagrams, boot/tick/app/render/service sequences |
+| [docs/APP_MODEL.md](docs/APP_MODEL.md) | Native app lifecycle, registry, descriptors, controls, app icons, and adding new apps |
+| [docs/INPUT_MODEL.md](docs/INPUT_MODEL.md) | Button normalization, debounce, short/long/double press detection, global launcher return |
+| [docs/HARDWARE.md](docs/HARDWARE.md) | M5StickC Plus pin map, HAL/service boundaries, display, power, IMU, IR sequences |
+| [docs/PLATFORMIO.md](docs/PLATFORMIO.md) | PlatformIO environment, build/upload/monitor flows, partitions |
+| [docs/CI_CD.md](docs/CI_CD.md) | GitHub Actions CI and release flows |
+| [docs/ROADMAP.md](docs/ROADMAP.md) | Implemented v0.1 scope and future milestones |
 
 ## Design rules
 

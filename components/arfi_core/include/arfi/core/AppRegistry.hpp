@@ -1,5 +1,7 @@
 #pragma once
 
+#include "arfi/core/AppIcon.hpp"
+
 #include <cstddef>
 #include <cstring>
 
@@ -13,6 +15,7 @@ struct AppDescriptor {
     const char* category = "";
     const char* glyph = "";
     App* instance = nullptr;
+    const AppIcon* icon = nullptr;
 };
 
 class AppRegistry {

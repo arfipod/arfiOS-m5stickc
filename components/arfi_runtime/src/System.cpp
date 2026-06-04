@@ -1,5 +1,7 @@
 #include "arfi/runtime/System.hpp"
 
+#include "arfi/apps/AppIcons.hpp"
+
 #include "esp_check.h"
 #include "esp_log.h"
 #include "esp_timer.h"
@@ -77,14 +79,14 @@ esp_err_t System::begin() {
 }
 
 void System::registerApps() {
-    registry_.add({"settings", "Settings", "System", "ST", &settings_app_});
-    registry_.add({"diagnostics", "Diagnostics", "System", "DG", &diagnostics_app_});
-    registry_.add({"pomodoro", "Pomodoro", "Tools", "PO", &pomodoro_app_});
-    registry_.add({"imu_level", "Nivel IMU", "Tools", "LV", &imu_level_app_});
-    registry_.add({"ir_sweep", "Barrido IR", "Tools", "IR", &ir_sweep_app_});
-    registry_.add({"flappy_bird", "Flappy Bird", "Games", "FB", &flappy_bird_app_});
-    registry_.add({"rest_reader", "REST API", "Tools", "RS", &rest_reader_app_});
-    registry_.add({"about", "About", "System", "AR", &about_app_});
+    registry_.add({"settings", "Settings", "System", "ST", &settings_app_, &app_icons::Settings});
+    registry_.add({"diagnostics", "Diagnostics", "System", "DG", &diagnostics_app_, &app_icons::Diagnostics});
+    registry_.add({"pomodoro", "Pomodoro", "Tools", "PO", &pomodoro_app_, &app_icons::Pomodoro});
+    registry_.add({"imu_level", "Nivel IMU", "Tools", "LV", &imu_level_app_, &app_icons::ImuLevel});
+    registry_.add({"ir_sweep", "Barrido IR", "Tools", "IR", &ir_sweep_app_, &app_icons::IrSweep});
+    registry_.add({"flappy_bird", "Flappy Bird", "Games", "FB", &flappy_bird_app_, &app_icons::FlappyBird});
+    registry_.add({"rest_reader", "REST API", "Tools", "RS", &rest_reader_app_, &app_icons::Rest});
+    registry_.add({"about", "About", "System", "AR", &about_app_, &app_icons::About});
 }
 
 void System::tick() {

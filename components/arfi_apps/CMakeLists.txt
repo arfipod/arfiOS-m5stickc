@@ -24,6 +24,7 @@ idf_component_register(
         arfi_core
         arfi_services
         arfi_ui
+        esp_partition
         esp_timer
         json
 )

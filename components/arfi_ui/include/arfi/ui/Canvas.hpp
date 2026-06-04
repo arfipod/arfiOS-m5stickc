@@ -1,5 +1,6 @@
 #pragma once
 
+#include "arfi/core/AppIcon.hpp"
 #include "arfi/ui/Color.hpp"
 
 #include <cstdint>
@@ -26,6 +27,7 @@ public:
     void drawText(int x, int y, std::string_view text, Color color, uint8_t scale = 1);
     void drawCenteredText(int cx, int y, std::string_view text, Color color, uint8_t scale = 1);
     int textWidth(std::string_view text, uint8_t scale = 1) const;
+    bool drawAppIcon(const AppIcon& icon, int x, int y, uint8_t scale = 1);
 
 private:
     void drawChar(int x, int y, char c, Color color, uint8_t scale);

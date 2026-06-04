@@ -72,6 +72,45 @@ void Canvas::drawCenteredText(int cx, int y, std::string_view text, Color color,
     drawText(cx - textWidth(text, scale) / 2, y, text, color, scale);
 }
 
+bool Canvas::drawAppIcon(const AppIcon& icon, int x, int y, uint8_t scale) {
+    if (!icon.valid() || scale == 0) {
+        return false;
+    }
+
+    switch (icon.format) {
+    case AppIconFormat::Rgb565: {
+        const auto* pixels = static_cast<const uint16_t*>(icon.data);
+        for (uint8_t yy = 0; yy < icon.height; ++yy) {
+            for (uint8_t xx = 0; xx < icon.width; ++xx) {
+                const uint16_t value = pixels[yy * icon.width + xx];
+                if (icon.has_transparency && value == icon.transparent_rgb565) {
+                    continue;
+                }
+                fillRect(x + xx * scale, y + yy * scale, scale, scale, Color(value));
+            }
+        }
+        return true;
+    }
+    case AppIconFormat::Mono1: {
+        const auto* bits = static_cast<const uint8_t*>(icon.data);
+        for (uint8_t yy = 0; yy < icon.height; ++yy) {
+            for (uint8_t xx = 0; xx < icon.width; ++xx) {
+                const uint16_t bit_index = yy * icon.width + xx;
+                const bool on = (bits[bit_index / 8] & (0x80 >> (bit_index % 8))) != 0;
+                if (on) {
+                    fillRect(x + xx * scale, y + yy * scale, scale, scale, Color(icon.foreground_rgb565));
+                } else if (!icon.has_transparency) {
+                    fillRect(x + xx * scale, y + yy * scale, scale, scale, Color(icon.background_rgb565));
+                }
+            }
+        }
+        return true;
+    }
+    }
+
+    return false;
+}
+
 void Canvas::drawChar(int x, int y, char c, Color color, uint8_t scale) {
     const uint8_t* glyph = glyphFor(c);
     for (int col = 0; col < 5; ++col) {

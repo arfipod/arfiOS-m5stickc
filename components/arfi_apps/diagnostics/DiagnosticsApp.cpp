@@ -22,7 +22,16 @@ void DiagnosticsApp::render(Canvas& canvas) {
     std::snprintf(line, sizeof(line), "UPTIME %luS", static_cast<unsigned long>(uptime_ms_ / 1000));
     canvas.drawText(8, 44, line, theme_.text, 1);
 
-    std::snprintf(line, sizeof(line), "HEAP %lu", static_cast<unsigned long>(heap_caps_get_free_size(MALLOC_CAP_INTERNAL)));
+    const size_t heap_total = heap_caps_get_total_size(MALLOC_CAP_INTERNAL);
+    const size_t heap_free = heap_caps_get_free_size(MALLOC_CAP_INTERNAL);
+    const size_t heap_used = heap_total > heap_free ? heap_total - heap_free : 0;
+    const uint32_t heap_percent = heap_total == 0 ? 0 : static_cast<uint32_t>((heap_used * 100U + heap_total / 2U) / heap_total);
+    std::snprintf(
+        line,
+        sizeof(line),
+        "RAM %lu%% FREE %luK",
+        static_cast<unsigned long>(heap_percent),
+        static_cast<unsigned long>(heap_free / 1024));
     canvas.drawText(8, 60, line, theme_.text, 1);
 
     std::snprintf(line, sizeof(line), "INPUT %s", last_event_);
